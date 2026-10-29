@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MauiLesson_8_SurvivalGame"
+             x:Class="MauiLesson_8_SurvivalGame.InventoryPage"
+             Title="Інвентар"
+             BackgroundColor="#181818">
+
+    <Grid RowDefinitions="Auto, Auto, *, Auto" Padding="20" RowSpacing="14">
+
+        <!-- Прикріплений HUD без дублювання слотів рюкзака -->
+        <local:PlayerHudView x:Name="HudView" Grid.Row="0" ShowSlots="False" />
+
+        <!-- Шапка інвентаря -->
+        <Border Grid.Row="1" BackgroundColor="#252525" Stroke="#3A3A3A" StrokeShape="RoundRectangle 12" Padding="15">
+            <Grid ColumnDefinitions="*, Auto">
+                <Label Grid.Column="0"
+                       Text="🎒 Рюкзак"
+                       FontSize="18" FontAttributes="Bold" TextColor="White"
+                       VerticalOptions="Center" />
+                <Label Grid.Column="1"
+                       x:Name="SlotsCountLabel"
+                       Text="Зайнято: 5 / 20 слотів"
+                       FontSize="14" TextColor="#81C784"
+                       VerticalOptions="Center" />
+            </Grid>
+        </Border>
+
+        <!-- Прокручуваний список предметів -->
+        <CollectionView Grid.Row="2" x:Name="ItemsCollectionView">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border BackgroundColor="#252525" Stroke="#3A3A3A" StrokeShape="RoundRectangle 10" Padding="12">
+                        <Grid ColumnDefinitions="*, Auto, Auto" ColumnSpacing="8" VerticalOptions="Center">
+                            <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                <Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold" TextColor="White" />
+                                <Label Text="{Binding Description}" FontSize="12" TextColor="#AAAAAA" />
+                            </VerticalStackLayout>
+
+                            <Button Grid.Column="1" Text="Дія"
+                                    BackgroundColor="#388E3C" TextColor="White" FontSize="12" HeightRequest="36"
+                                    Clicked="OnUseItemClicked" CommandParameter="{Binding Id}" />
+
+                            <Button Grid.Column="2" Text="✖"
+                                    BackgroundColor="#C62828" TextColor="White" FontSize="12" HeightRequest="36" WidthRequest="40"
+                                    Clicked="OnDropItemClicked" CommandParameter="{Binding Id}" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Статус-бар інвентаря -->
+        <Border Grid.Row="3" BackgroundColor="#121212" Stroke="#42A5F5" StrokeShape="RoundRectangle 8" Padding="12">
+            <Label x:Name="InventoryStatusLabel" Text="Оберіть предмет для використання або керування запасами..." FontSize="14" TextColor="#E0E0E0" />
+        </Border>
+
+    </Grid>
+</ContentPage>
